@@ -43,7 +43,7 @@ def routerAccountInfo(headers,mac):
         result = res_json["result"]
         accountInfo = result["accountInfo"]
         amount = accountInfo["amount"]
-        content['可用积分'] = str(amount) + routerActivityInfo(headers,mac)
+        content["可用积分"] = str(amount) + routerActivityInfo(headers,mac)
     else:
         print("获取routerAccountInfo失败")
     return content
@@ -58,7 +58,7 @@ def routerActivityInfo(headers,mac):
         res_json = res.json()
         result = res_json["result"]
         satisfiedTimes = result["routerUnderwayResult"]["satisfiedTimes"]
-        content['累计在线'] = str(satisfiedTimes)+"天"
+        content["累计在线"] = str(satisfiedTimes)+"天"
 
     else:
         print("获取routerActivityInfo失败")
@@ -80,10 +80,10 @@ def todayPointDetail(headers):
         todayDate = result["todayDate"]
         totalRecord = result["pageInfo"]["totalRecord"]
         pointInfos = result["pointInfos"]
-        content['数据日期'] = todayDate
-        content['总可用积分'] = str(pinTotalAvailPoint(headers))
-        content['设备总数'] = str(totalRecord)
-        content['设备收益如下'] = ""
+        content["数据日期"] = todayDate
+        content["总可用积分"] = str(pinTotalAvailPoint(headers))
+        content["设备总数"] = str(totalRecord)
+        content["设备收益如下"] = ""
         for info in pointInfos:
             mac = info["mac"]
             MAC.append(mac)
@@ -110,7 +110,7 @@ def pointOperateRecordsShow(headers,mac):
         res_json = res.json()
         result = res_json["result"]
         pointRecords = result["pointRecords"]
-        content['最近7条记录'] = ""
+        content["最近7条记录"] = ""
         for pointRecord in pointRecords:
             recordType_str = " "
             recordType = pointRecord["recordType"]

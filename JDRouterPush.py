@@ -89,7 +89,7 @@ def todayPointDetail(headers):
             MAC.append(mac)
             todayPointIncome = info["todayPointIncome"]
             allPointIncome = info["allPointIncome"]
-            content['京东云无线宝_" + str(mac[-4:]) + " ==>今日收益'] = str(todayPointIncome)
+            content["京东云无线宝_" + str(mac[-4:]) + " ==>今日收益"] = str(todayPointIncome)
             content['总积分'] = str(allPointIncome) \
                       + routerAccountInfo(headers, mac) \
                       + pointOperateRecordsShow(headers,mac)

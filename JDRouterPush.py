@@ -71,7 +71,10 @@ def todayPointDetail(headers):
         "pageSize": "30",
         "currentPage": "1",
     }
-    content = {}
+    content = {
+        "数据日期": "",
+        "总可用积分":""
+    }
     MAC = []
     res = requests.get(jd_base_url + "todayPointDetail", params=params, headers=headers)
     if res.status_code == 200:

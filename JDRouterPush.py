@@ -79,7 +79,8 @@ def todayPointDetail(headers):
         todayDate = result["todayDate"]
         totalRecord = result["pageInfo"]["totalRecord"]
         pointInfos = result["pointInfos"]
-        content = content + "数据日期: " + todayDate + "\n* 总可用积分: " + str(pinTotalAvailPoint(headers)) + "\n* 设备总数: " + str(totalRecord) + "\n* 设备收益如下:"
+        # content = content + "数据日期: " + todayDate + "\n* 总可用积分: " + str(pinTotalAvailPoint(headers)) + "\n* 设备总数: " + str(totalRecord) + "\n* 设备收益如下:"
+        content = content + "总可用积分: " + str(pinTotalAvailPoint(headers))"
         for info in pointInfos:
             mac = info["mac"]
             MAC.append(mac)

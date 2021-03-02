@@ -37,13 +37,13 @@ def routerAccountInfo(headers,mac):
         "mac" : mac,
     }
     res = requests.get(jd_base_url + "routerAccountInfo", params=params, headers=headers)
-    content = ""
+    content = {}
     if res.status_code == 200:
         res_json = res.json()
         result = res_json["result"]
         accountInfo = result["accountInfo"]
         amount = accountInfo["amount"]
-        content = " 可用积分:" + str(amount) + routerActivityInfo(headers,mac)
+        content['可用积分'] = str(amount) + routerActivityInfo(headers,mac)
     else:
         print("获取routerAccountInfo失败")
     return content
@@ -52,13 +52,14 @@ def routerActivityInfo(headers,mac):
     params = {
         "mac": mac,
     }
-    content = ""
+    content = {}
     res = requests.get(jd_base_url + "router:activityInfo", params=params, headers=headers)
     if res.status_code == 200:
         res_json = res.json()
         result = res_json["result"]
         satisfiedTimes = result["routerUnderwayResult"]["satisfiedTimes"]
-        content = "    累计在线:" + str(satisfiedTimes)+"天"
+        content['累计在线'] = str(satisfiedTimes)+"天"
+
     else:
         print("获取routerActivityInfo失败")
     return content
@@ -70,7 +71,7 @@ def todayPointDetail(headers):
         "pageSize": "30",
         "currentPage": "1",
     }
-    content = ""
+    content = {}
     MAC = []
     res = requests.get(jd_base_url + "todayPointDetail", params=params, headers=headers)
     if res.status_code == 200:
@@ -79,13 +80,17 @@ def todayPointDetail(headers):
         todayDate = result["todayDate"]
         totalRecord = result["pageInfo"]["totalRecord"]
         pointInfos = result["pointInfos"]
-        content = content + "* 数据日期: " + todayDate + " \n\n* 总可用积分: " + str(pinTotalAvailPoint(headers)) + " \n* 设备总数: " + str(totalRecord) + "\n* 设备收益如下:"
+        content['数据日期'] = todayDate
+        content['总可用积分'] = str(pinTotalAvailPoint(headers))
+        content['设备总数'] = str(totalRecord)
+        content['设备收益如下'] = ""
         for info in pointInfos:
             mac = info["mac"]
             MAC.append(mac)
             todayPointIncome = info["todayPointIncome"]
             allPointIncome = info["allPointIncome"]
-            content = content + "\n  * 京东云无线宝_" + str(mac[-4:]) + " ==>\n今日收益: " + str(todayPointIncome) + " 总积分: " + str(allPointIncome) \
+            content['京东云无线宝_" + str(mac[-4:]) + " ==>今日收益'] = str(todayPointIncome)
+            content['总积分'] = str(allPointIncome) \
                       + routerAccountInfo(headers, mac) \
                       + pointOperateRecordsShow(headers,mac)
     else:
@@ -99,13 +104,13 @@ def pointOperateRecordsShow(headers,mac):
         "pageSize": 7,
         "currentPage": 1
     }
-    content = ""
+    content = {}
     res = requests.get(jd_base_url + "pointOperateRecords:show", params=params, headers=headers)
     if res.status_code == 200:
         res_json = res.json()
         result = res_json["result"]
         pointRecords = result["pointRecords"]
-        content = "\n* 最近7条记录:"
+        content['最近7条记录'] = ""
         for pointRecord in pointRecords:
             recordType_str = " "
             recordType = pointRecord["recordType"]
@@ -116,7 +121,7 @@ def pointOperateRecordsShow(headers,mac):
                 recordType_str = "积分收入:"
             else:
                 recordType_str = "积分支出:"
-            content = content + "\n *  " + str(createTime_str) + "\t" + recordType_str + " " + str(pointAmount)
+            content[str(createTime_str) + "\t" + recordType_str] = str(pointAmount)
     else:
         print("获取pointOperateRecordsShow失败")
     return content
@@ -130,7 +135,8 @@ def sendNotification(SERVERPUSHKEY,text,desp):
     params = {
         "token":SERVERPUSHKEY,
         "title":text,
-        "content":desp
+        "content":desp,
+        "template":"json"
         #"text" : text,
         #"desp" : desp
     }
